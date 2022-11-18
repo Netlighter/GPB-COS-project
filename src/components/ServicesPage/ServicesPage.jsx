@@ -1,42 +1,68 @@
 import { getServices } from '../../store/actionCreators';
 import React from 'react';
+import '../../animations/fade-in.css';
+import { Table, Spin, Alert, Button } from 'antd';
 
 class ServicesPage extends React.Component {
-
   componentDidMount() {
-    this.props.dispatch(getServices())
-    console.log('wtf')
+    this.props.dispatch(getServices());
   }
 
   render() {
-  return (
-    <div>
-      {this.props.loading 
-        ? <p>Loading...</p> 
-        : this.props.error
-            ? <p>Error, try again</p>
-            :
-            this.props.data?.map((service) => 
-            (
-              <p key={service.id}>
-                {service.name} | {service.price}
-              </p>
-            )
-            )
+    const tableData = [];
+    const tableColumns = [];
+    const fields = ['id', 'name', 'price'];
+
+    fields.forEach((item) => {
+      tableColumns.push({
+        title: item,
+        dataIndex: item,
+        key: item,
+      });
+    });
+
+    this.props.data?.forEach((item, index) => {
+      tableData.push({ ...item, key: index + 1 });
+    });
+
+    // TODO: ошибка не всегда срабатывает
+
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {this.props.loading ? (
+          <Spin size="large" style={{ margin: '4rem' }} />
+        ) : this.props.error ? (
+          <Alert
+            className="fade-in"
+            style={{ margin: '4rem' }}
+            message="Something goes wrong"
+            showIcon
+            description=""
+            type="error"
+            action={
+              <Button
+                size="small"
+                danger
+                onClick={(e) => {
+                  this.props.dispatch(getServices());
+                }}
+              >
+                Try again
+              </Button>
             }
-  </div>
-  );}
+          />
+        ) : (
+          <Table
+            dataSource={tableData}
+            columns={tableColumns}
+            size="small"
+            bordered={true}
+          ></Table>
+        )}
+      </div>
+    );
+  }
 }
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     getServices: () => dispatch(getServices()), 
-//     dispatch
-//   }
-// }
-
-// const connectedApp = connect(mapStateToProps)(ServicesPage);
-// export { connectedApp as ServicesPage }
+//TODO: proptypes!!!
 
 export default ServicesPage;
-
