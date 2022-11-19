@@ -10,36 +10,34 @@ class ServicesPage extends React.Component {
   }
 
   render() {
-    const tableData = [];
-    const tableColumns = [];
-    const fields = ['id', 'name', 'price'];
+    const fields = ['id', 'name', 'price']
 
-    fields.forEach((item) => {
-      tableColumns.push({
+    const tableColumns = fields.map((item) => {
+      return {
         title: item,
         dataIndex: item,
         key: item,
-        render: item=='id' ? id =>
-        <Link to={`/details/${id}`}>
-
-          {id}
-          {this.props.children}
-        </Link> : null
-        
-      });
+        render:
+          item == 'id'
+            ? (id) => (
+                <Link to={`/details/${id}`}>
+                  {id}
+                  {this.props.children}
+                </Link>
+              )
+            : null,
+      };
     });
 
-    this.props.services?.forEach((item, index) => {
-      tableData.push({ ...item, key: index + 1 });
+    const tableData = this.props.services?.data.map((item, index) => {
+      return { ...item, key: index + 1 };
     });
-
-    // TODO: ошибка не всегда срабатывает
 
     return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {this.props.loading ? (
+        {this.props.services?.loading ? (
           <Spin size="large" style={{ margin: '4rem' }} />
-        ) : this.props.error ? (
+        ) : this.props.services?.error ? (
           <Alert
             className="fade-in"
             style={{ margin: '4rem' }}
@@ -65,6 +63,7 @@ class ServicesPage extends React.Component {
             columns={tableColumns}
             size="small"
             bordered={true}
+            style={{ margin: '4rem' }}
           ></Table>
         )}
       </div>

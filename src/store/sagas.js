@@ -1,6 +1,9 @@
 import { call, put, all, takeLatest } from 'redux-saga/effects';
 
 import {
+  requestDetails,
+  requestDetailsError,
+  requestDetailsSuccess,
   requestServices,
   requestServicesError,
   requestServicesSuccess,
@@ -22,20 +25,18 @@ function* fetchServicesAsync() {
 
 function* fetchDetailsAsync(action) {
   try {
-    yield put(requestServices());
+    yield put(requestDetails());
     const response = yield call((id) => {
       return fetch(`http://localhost:7070/api/services/${id}`).then((resp) =>
         resp.json()
       );
     }, action.id);
-    console.log(response)
-    yield put(requestServicesSuccess(response));
+    yield put(requestDetailsSuccess(response));
   } catch (error) {
-    yield put(requestServicesError());
+    yield put(requestDetailsError());
   }
 }
 
-// TODO: do this
 function* watchAll() {
   yield all([
     takeLatest('GET_SERVICES', fetchServicesAsync),

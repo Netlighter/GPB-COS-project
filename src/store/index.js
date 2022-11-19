@@ -1,14 +1,19 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { connect } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import reducer from './reducers';
 import watchAll from './sagas';
-import ServicesPage from '../components/ServicesPage';
-import DetailsPage from '../components/DetailsPage';
+import ServicesPage from '../pages/ServicesPage';
+import DetailsPage from '../pages/DetailsPage';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+const composedEnhancer = composeWithDevTools(
+  applyMiddleware(sagaMiddleware)
+)
+
+const store = createStore(reducer, composedEnhancer);
 
 export default store;
 
