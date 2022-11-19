@@ -1,7 +1,8 @@
-import { getServices } from '../../store/actionCreators';
+import { getDetails, getServices } from '../store/actionCreators';
 import React from 'react';
-import '../../animations/fade-in.css';
+import '../animations/fade-in.css';
 import { Table, Spin, Alert, Button } from 'antd';
+import { Link } from 'react-router-dom';
 
 class ServicesPage extends React.Component {
   componentDidMount() {
@@ -18,10 +19,17 @@ class ServicesPage extends React.Component {
         title: item,
         dataIndex: item,
         key: item,
+        render: item=='id' ? id =>
+        <Link to={`/details/${id}`}>
+
+          {id}
+          {this.props.children}
+        </Link> : null
+        
       });
     });
 
-    this.props.data?.forEach((item, index) => {
+    this.props.services?.forEach((item, index) => {
       tableData.push({ ...item, key: index + 1 });
     });
 

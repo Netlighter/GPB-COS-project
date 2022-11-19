@@ -2,8 +2,9 @@ import { createStore, applyMiddleware } from 'redux';
 import { connect } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import reducer from './reducers';
-import watchGetServices from './sagas';
-import ServicesPage from '../components/ServicesPage/ServicesPage';
+import watchAll from './sagas';
+import ServicesPage from '../components/ServicesPage';
+import DetailsPage from '../components/DetailsPage';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -15,4 +16,8 @@ export const ServicesPageC = connect((state) => {
   return state;
 })(ServicesPage);
 
-sagaMiddleware.run(watchGetServices);
+export const DetailsPageC = connect((state) => {
+  return state;
+})(DetailsPage);
+
+sagaMiddleware.run(watchAll);

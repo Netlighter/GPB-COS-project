@@ -2,11 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './store';
+import store, { DetailsPageC, ServicesPageC } from './store';
 import './index.css';
-import { ServicesPageC } from './store';
 
 const router = createBrowserRouter([
+  {
+    path: '/details/:id',
+    element: <DetailsPageC />,
+  },
   {
     path: '/',
     element: <ServicesPageC />,
