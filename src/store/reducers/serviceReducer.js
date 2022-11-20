@@ -1,10 +1,10 @@
 const servicesState = {
-    data: [],
-    loading: false,
-    error: false,
-  };
+  data: [],
+  loading: false,
+  error: false,
+};
 
-  export default function details (state = servicesState, action) {
+export default function details(state = servicesState, action) {
   switch (action.type) {
     case 'REQUEST_SERVICES':
       return {
@@ -24,8 +24,9 @@ const servicesState = {
         loading: false,
         error: true,
       };
-    
+
     default:
       return state;
   }
-};
+}
+

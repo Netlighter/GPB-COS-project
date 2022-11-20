@@ -8,6 +8,7 @@ import {
   requestServicesError,
   requestServicesSuccess,
 } from './actionCreators';
+import { GET_DETAILS, GET_SERVICES } from './actionTypes';
 
 function* fetchServicesAsync() {
   try {
@@ -39,9 +40,8 @@ function* fetchDetailsAsync(action) {
 
 function* watchAll() {
   yield all([
-    takeLatest('GET_SERVICES', fetchServicesAsync),
-    takeLatest('GET_DETAILS', fetchDetailsAsync),
+    takeLatest(GET_SERVICES, fetchServicesAsync),
+    takeLatest(GET_DETAILS, fetchDetailsAsync),
   ]);
 }
 export default watchAll;
-

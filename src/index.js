@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store, { DetailsPageC, ServicesPageC } from './store';
-import './index.css';
+import './styles/index.css';
 
 const router = createBrowserRouter([
   {

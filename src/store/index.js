@@ -9,9 +9,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const composedEnhancer = composeWithDevTools(
-  applyMiddleware(sagaMiddleware)
-)
+const composedEnhancer = composeWithDevTools(applyMiddleware(sagaMiddleware));
 
 const store = createStore(reducer, composedEnhancer);
 
@@ -26,3 +24,5 @@ export const DetailsPageC = connect((state) => {
 })(DetailsPage);
 
 sagaMiddleware.run(watchAll);
+
+// TODO: variables

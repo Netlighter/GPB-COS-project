@@ -1,8 +1,13 @@
-import { getDetails, getServices } from '../store/actionCreators';
-import React from 'react';
+import { getDetails } from '../store/actionCreators';
+import React, { Suspense } from 'react';
 import '../animations/fade-in.css';
-import { Card, Spin, Alert, Button } from 'antd';
+import { Card } from 'antd';
 import { useParams } from 'react-router-dom';
+import ErrorAlert from '../components/ErrorAlert';
+import Loading from '../components/Loading';
+import '../styles/index.css';
+import DetailsCard from '../components/DetailsCard';
+import PropTypes from 'prop-types';
 
 const withRouter = (WrappedComponent) => (props) => {
   const params = useParams();
@@ -12,53 +17,27 @@ const withRouter = (WrappedComponent) => (props) => {
 class DetailsPage extends React.Component {
   componentDidMount() {
     this.props.dispatch(getDetails(this.props.params.id));
-    console.log(this.props)
   }
-
   render() {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div className="wrapper">
         {this.props.details?.loading ? (
-          <Spin size="large" style={{ margin: '4rem' }} />
+          <Loading />
         ) : this.props.details?.error ? (
-          <Alert
-            className="fade-in"
-            style={{ margin: '4rem' }}
-            message="Something goes wrong"
-            showIcon
-            description=""
-            type="error"
-            action={
-              <Button
-                size="small"
-                danger
-                onClick={(e) => {
-                  this.props.dispatch(getDetails(this.props.params.id));
-                }}
-              >
-                Try again
-              </Button>
-            }
+          <ErrorAlert
+            action={() => this.props.dispatch(getDetails(this.props.params.id))}
           />
         ) : (
-          <Card
-            title={this.props.details?.data.name}
-            style={{
-              width: 300,
-              margin: '4rem'
-            }}
-          >
-            {this.props.details && Object.entries(this.props.details?.data).map(([key, value]) => (
-              <p key={key}><b>{key}</b>: {value}</p>
-              
-            ))}
-          </Card>
+          <DetailsCard data={this.props.details?.data} />
         )}
       </div>
     );
   }
 }
-// TODO: localization?
-//TODO: proptypes!!!
+
+DetailsPage.propTypes = {
+  details: PropTypes.object,
+  params: PropTypes.object,
+};
 
 export default withRouter(DetailsPage);

@@ -4,7 +4,7 @@ const detailsState = {
   error: false,
 };
 
-export default function services (state = detailsState, action) {
+export default function services(state = detailsState, action) {
   switch (action.type) {
     case 'REQUEST_DETAILS':
       return {
@@ -27,4 +27,5 @@ export default function services (state = detailsState, action) {
     default:
       return state;
   }
-};
+}
+

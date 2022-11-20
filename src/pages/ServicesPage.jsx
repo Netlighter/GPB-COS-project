@@ -1,8 +1,12 @@
-import { getDetails, getServices } from '../store/actionCreators';
+import { getServices } from '../store/actionCreators';
 import React from 'react';
 import '../animations/fade-in.css';
-import { Table, Spin, Alert, Button } from 'antd';
 import { Link } from 'react-router-dom';
+import Loading from '../components/Loading';
+import ErrorAlert from '../components/ErrorAlert';
+import '../styles/index.css';
+import ServicesTable from '../components/ServicesTable';
+import PropTypes from 'prop-types';
 
 class ServicesPage extends React.Component {
   componentDidMount() {
@@ -10,22 +14,14 @@ class ServicesPage extends React.Component {
   }
 
   render() {
-    const fields = ['id', 'name', 'price']
-
+    const fields = ['id', 'name', 'price'];
     const tableColumns = fields.map((item) => {
       return {
         title: item,
         dataIndex: item,
         key: item,
         render:
-          item == 'id'
-            ? (id) => (
-                <Link to={`/details/${id}`}>
-                  {id}
-                  {this.props.children}
-                </Link>
-              )
-            : null,
+          item == 'id' ? (id) => <Link to={`/details/${id}`}>{id}</Link> : null,
       };
     });
 
@@ -34,42 +30,21 @@ class ServicesPage extends React.Component {
     });
 
     return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div className="wrapper">
         {this.props.services?.loading ? (
-          <Spin size="large" style={{ margin: '4rem' }} />
+          <Loading />
         ) : this.props.services?.error ? (
-          <Alert
-            className="fade-in"
-            style={{ margin: '4rem' }}
-            message="Something goes wrong"
-            showIcon
-            description=""
-            type="error"
-            action={
-              <Button
-                size="small"
-                danger
-                onClick={(e) => {
-                  this.props.dispatch(getServices());
-                }}
-              >
-                Try again
-              </Button>
-            }
-          />
+          <ErrorAlert action={() => this.props.dispatch(getServices())} />
         ) : (
-          <Table
-            dataSource={tableData}
-            columns={tableColumns}
-            size="small"
-            bordered={true}
-            style={{ margin: '4rem' }}
-          ></Table>
+          <ServicesTable data={{ tableData, tableColumns }} />
         )}
       </div>
     );
   }
 }
-//TODO: proptypes!!!
+
+ServicesPage.propTypes = {
+  services: PropTypes.object,
+};
 
 export default ServicesPage;
